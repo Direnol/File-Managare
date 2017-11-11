@@ -1,0 +1,2 @@
+# File-Managare
+Used ncurses
