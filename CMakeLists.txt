@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES
         main.c
         window.c
-        window.h)
+        window.h
+        file.c
+        file.h)
 
 add_executable(File_Managare ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} m panel ncurses)

@@ -12,15 +12,17 @@
 #include <signal.h>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <panel.h>
 
 void _resize_term(int sig);
 
-int init();
+int init(PANEL *enter);
 
 int err_destruct(char *msg);
 
 void desturct();
 
+void movexy(chtype dir, WINDOW *win);
 #define try_do(func, msg) if ((func) == ERR) return err_destruct(msg)
 
 
