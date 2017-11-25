@@ -2,9 +2,11 @@
 // Created by direnol on 11.11.17.
 //
 
-#include "window.h"
+#include <stdio.h>
+#include "../headers/editor.h"
 int main(int argc, char **argv)
 {
+
     PANEL *enter = NULL;
     if (init(enter)) {
         return err_destruct("init");
@@ -12,53 +14,37 @@ int main(int argc, char **argv)
     WINDOW *win = newwin(getmaxy(stdscr) - 4, getmaxx(stdscr) - 2, 1, 1);
     if (!win) return err_destruct("Create window");
     bool work = true;
-    char *buffer = malloc(sizeof(char) * getmaxy(win));
+    char *buffer = malloc(sizeof(char) * getmaxx(win) + 1);
     if (!buffer) return err_destruct("Malloc");
     chtype c;
-    int x, y;
+    int file = -1;
+    int max_pos = 0;
+    int cur = 0;
     while (work) {
-        getyx(win, y, x);
         wrefresh(win);
         c = (chtype) getch();
         switch (c) {
-            case (KEY_UP):
-            case (KEY_LEFT):
-            case (KEY_DOWN):
-            case (KEY_RIGHT): {
-                movexy(c, win);
-                break;
-            }
-            case (127): {
-                wdelch(win);
-                break;
-            }
-            case (KEY_DC): {
-                wdelch(win);
-                break;
-            }
-            case (KEY_F(5)): {
+            case (KEY_F(1)): {
                 wclear(win);
+                waddstr(win, "Enter filename: ");
                 echo();
                 wgetstr(win, buffer);
                 noecho();
                 wclear(win);
-                waddstr(win, buffer);
+                openF1(win, &file, &cur, &max_pos, buffer);
+                break;
+            }
+            case (KEY_F(2)): {
+                saveF2(win, file, max_pos, buffer);
                 break;
             }
             case (KEY_F(3)): {
+                close_file(&file);
                 work = false;
                 break;
             }
-            case (KEY_F(6)): {
-                winnstr(win, buffer, 5);
-                break;
-            }
-            case (KEY_F(7)): {
-                waddstr(win, buffer);
-                break;
-            }
             default: {
-                waddch(win, c);
+                keymap(win, c, &cur, &max_pos);
                 break;
             }
         }

@@ -22,7 +22,7 @@ int err_destruct(char *msg);
 
 void desturct();
 
-void movexy(chtype dir, WINDOW *win);
+int movexy(chtype dir, WINDOW *win, int *cur, int *max);
 #define try_do(func, msg) if ((func) == ERR) return err_destruct(msg)
 
 

@@ -2,13 +2,16 @@
 // Created by direnol on 12.11.17.
 //
 
-#include "file.h"
-int open_file(char *name)
+#include "../headers/file.h"
+int open_file(char *name, int *fd, int *param)
 {
-    int res = open(name, O_RDWR);
-    if (res != (-1)) return EXIT_SUCCESS;
-    res = open(name, O_CREAT, 0666);
-    if (res < 0) return EXIT_FAILURE;
+    int p;
+    if (param == NULL) p = O_RDWR;
+    else p = *param;
+    *fd = open(name, p);
+    if (*fd != (-1)) return EXIT_SUCCESS;
+    *fd = open(name, O_CREAT, 0666);
+    if (*fd < 0) return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
 
@@ -27,9 +30,19 @@ int read_file(int file, char *buf, long start, long count)
     if (file < 0) return EXIT_FAILURE;
     long size;
     if (size_of_file(file, &size)) return EXIT_FAILURE;
-    if (start < 0 || (count - start) > size) return EXIT_FAILURE;
+    if (start < 0) return EXIT_FAILURE;
     lseek(file, start, SEEK_SET);
-    if (read(file, buf, (size_t) count) == 0) return EXIT_FAILURE;
+    ssize_t n;
+    n = read(file, buf, (size_t) count);
+    if (n <= 0) return EXIT_FAILURE;
+    buf[n] = '\0';
+    return EXIT_SUCCESS;
+}
+int close_file(int *fd)
+{
+    if (*fd < 0) return EXIT_FAILURE;
+    close(*fd);
+    *fd = -1;
     return EXIT_SUCCESS;
 }
 
