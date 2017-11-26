@@ -3,7 +3,7 @@
 //
 
 #include "../headers/window.h"
-int init(PANEL *enter)
+int init(WINDOW *enter)
 {
     if (initscr() == NULL) return EXIT_FAILURE;
 
@@ -19,6 +19,8 @@ int init(PANEL *enter)
     if (refresh() == ERR) return EXIT_FAILURE;
     wrefresh(panel);
     delwin(panel);
+    enter = newwin(getmaxy(stdscr) - 4, getmaxx(stdscr) - 2, 1, 1);
+    if (!enter) return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
 void desturct()
@@ -83,7 +85,7 @@ int movexy(chtype dir, WINDOW *win, int *cur, int *max)
             break;
         }
         case (KEY_DOWN): {
-            //wmove(win, y + 1, x);
+            if (y == maxy) return EXIT_FAILURE;
             int tx = x, ty = y + 1;
             int tmp = *cur;
             movexy(KEY_RIGHT, win, cur, max);
@@ -96,6 +98,9 @@ int movexy(chtype dir, WINDOW *win, int *cur, int *max)
                 *cur = tmp;
             }
             break;
+        }
+        default: {
+            return EXIT_FAILURE;
         }
     }
     return EXIT_SUCCESS;

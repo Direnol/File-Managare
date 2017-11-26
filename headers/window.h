@@ -16,7 +16,7 @@
 
 void _resize_term(int sig);
 
-int init(PANEL *enter);
+int init(WINDOW *enter);
 
 int err_destruct(char *msg);
 

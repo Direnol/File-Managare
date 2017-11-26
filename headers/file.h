@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int open_file(char *name, int *fd, int *param);
+int open_file(char *name, int *fd, const int *param);
 
 int read_file(int file, char *buf, long start, long count);
 

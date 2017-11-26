@@ -6,13 +6,10 @@
 #include "../headers/editor.h"
 int main(int argc, char **argv)
 {
-
-    PANEL *enter = NULL;
-    if (init(enter)) {
+    WINDOW *win = NULL;
+    if (init(win)) {
         return err_destruct("init");
     }
-    WINDOW *win = newwin(getmaxy(stdscr) - 4, getmaxx(stdscr) - 2, 1, 1);
-    if (!win) return err_destruct("Create window");
     bool work = true;
     char *buffer = malloc(sizeof(char) * getmaxx(win) + 1);
     if (!buffer) return err_destruct("Malloc");

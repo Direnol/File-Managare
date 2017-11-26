@@ -3,7 +3,7 @@
 //
 
 #include "../headers/file.h"
-int open_file(char *name, int *fd, int *param)
+int open_file(char *name, int *fd, const int *param)
 {
     int p;
     if (param == NULL) p = O_RDWR;
