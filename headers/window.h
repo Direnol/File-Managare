@@ -16,7 +16,7 @@
 
 void _resize_term(int sig);
 
-int init(WINDOW *enter);
+int init(WINDOW *enter, size_t count_windows);
 
 int err_destruct(char *msg);
 

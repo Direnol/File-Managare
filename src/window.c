@@ -3,7 +3,7 @@
 //
 
 #include "../headers/window.h"
-int init(WINDOW *enter)
+int init(WINDOW *enter, size_t count_windows)
 {
     if (initscr() == NULL) return EXIT_FAILURE;
 

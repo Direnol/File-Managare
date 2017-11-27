@@ -7,7 +7,7 @@
 int main(int argc, char **argv)
 {
     WINDOW *win = NULL;
-    if (init(win)) {
+    if (init(win, 1)) {
         return err_destruct("init");
     }
     bool work = true;
