@@ -6,10 +6,14 @@
 #include "../headers/editor.h"
 int main(int argc, char **argv)
 {
-    WINDOW *win = NULL;
-    if (init(win, 1)) {
+    WINDOW *overlay = NULL;
+    if ((overlay = init()) == NULL) {
         return err_destruct("init");
     }
+    WINDOW *win = NULL;
+    win = derwin(overlay, getmaxy(overlay) - 2, getmaxx(overlay) - 2, 1, 1);
+
+
     bool work = true;
     char *buffer = malloc(sizeof(char) * getmaxx(win) + 1);
     if (!buffer) return err_destruct("Malloc");
@@ -17,22 +21,20 @@ int main(int argc, char **argv)
     int file = -1;
     int max_pos = 0;
     int cur = 0;
+
+    if (openF1(win, &file, &cur, &max_pos, argv[1])) {
+        return err_destruct("Open");
+    }
+
     while (work) {
         wrefresh(win);
         c = (chtype) getch();
         switch (c) {
-            case (KEY_F(1)): {
-                wclear(win);
-                waddstr(win, "Enter filename: ");
-                echo();
-                wgetstr(win, buffer);
-                noecho();
-                wclear(win);
-                openF1(win, &file, &cur, &max_pos, buffer);
-                break;
-            }
             case (KEY_F(2)): {
-                saveF2(win, file, max_pos, buffer);
+                if (saveF2(win, file, max_pos, buffer)) {
+                    return err_destruct("Save");
+                }
+                wclear(win);
                 break;
             }
             case (KEY_F(3)): {

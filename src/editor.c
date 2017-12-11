@@ -69,7 +69,7 @@ int saveF2(WINDOW *win, int fd, int max_pos, char *name)
     for (int i = 0; i <= yy && i < my; ++i) {
         memset(buf, 0, (size_t) (mx + 2));
         mvwinnstr(win, i, 0, buf, mx);
-        ltrim(buf, strlen(buf));
+        rtrim(buf, strlen(buf));
         size_t n = strlen(buf);
         buf[n] = '\n';
         buf[n + 1] = '\0';
@@ -80,10 +80,7 @@ int saveF2(WINDOW *win, int fd, int max_pos, char *name)
     free(buf);
     return EXIT_SUCCESS;
 }
-void ltrim(char *str, size_t len)
-{
-    for (size_t i = len - 1; i >= 0 && str[i] == ' '; --i) str[i] = '\0';
-}
+
 int openF1(WINDOW *win, int *file, int *cur, int *max, char *buffer)
 {
     close_file(file);

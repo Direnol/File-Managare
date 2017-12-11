@@ -12,6 +12,5 @@ int openF1(WINDOW *win, int *fd, int *cur, int *max, char *name);
 
 int ctrl(WINDOW *win, int *cur, int *max);
 
-void ltrim(char *str, size_t len);
 
 #endif //FILE_MANAGARE_EDITOR_H
