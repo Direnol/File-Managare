@@ -50,10 +50,16 @@ int main(int argc, char **argv)
                 doupdate();
                 break;
             }
-            case KEY_F(2):hide_panel(pan1);
+            case KEY_F(2): {
+                hide_panel(pan1);
                 update_panels();
                 doupdate();
                 break;
+            }
+            case KEY_F(5): {
+                cp(list[y[cur_window]]->d_name, path[cur_window ^ 1]);
+                break;
+            }
             case KEY_F(10): {
                 work = 0;
                 break;
@@ -71,11 +77,14 @@ int main(int argc, char **argv)
                 wrefresh(wins[cur_window]);
                 getch();
                 break;
-            case '\t':cur_window ^= 1;
+            case '\t': {
+                cur_window ^= 1;
+                chdir(path[cur_window]);
                 free(list);
                 list = NULL;
                 n = scandir(path[cur_window], &list, 0, alphasort);
                 break;
+            }
             case '\n':
                 if (isDir(list[y[cur_window]])) {
                     chdir(path[cur_window]);
@@ -89,7 +98,7 @@ int main(int argc, char **argv)
                 } else {
                     pid_t editor;
                     if ((editor = fork()) == 0) {
-                        execl(EDITOR, EDITOR, list[y[cur_window]]->d_name, NULL);
+                        execl(PATH_EDITOR, EDITOR, list[y[cur_window]]->d_name, NULL);
                         endwin();
                         exit(EXIT_FAILURE);
                     } else if (editor < 0) {
